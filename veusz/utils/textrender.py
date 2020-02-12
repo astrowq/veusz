@@ -1,7 +1,7 @@
 # textrender.py
 # module to render text, tries to understand a basic LateX-like syntax
 
-#    Copyright (C) 2003 Jeremy S. Sanders
+#    Copyright (C) 2003 Jeremy S.  Sanders
 #    Email: Jeremy Sanders <jeremy@jeremysanders.net>
 #
 #    This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,6 @@
 #    with this program; if not, write to the Free Software Foundation, Inc.,
 #    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ###############################################################################
-
 from __future__ import division
 import math
 import re
@@ -639,7 +638,7 @@ class PartText(Part):
 
         # actually write the text if requested
         if state.actually_render:
-            state.painter.drawText( qt4.QPointF(state.x, state.y), self.text )
+            state.painter.drawText(qt4.QPointF(state.x, state.y), self.text)
 
         # move along, nothing to see
         state.x += width
@@ -661,7 +660,7 @@ class PartLines(Part):
         inity = state.y
         initx = state.x
 
-        state.y -= height*(len(self.children)-1)
+        state.y -= height * (len(self.children) - 1)
 
         # iterate over lines (reverse as we draw from bottom up)
         for i, part in enumerate(self.children):
@@ -673,7 +672,7 @@ class PartLines(Part):
                     state.x = initx
                 elif state.alignhorz == 0:
                     # centre alignment
-                    state.x = initx + (xwidth - self.widths[i])*0.5
+                    state.x = initx + (xwidth - self.widths[i]) * 0.5
                 elif state.alignhorz > 0:
                     # right alignment
                     state.x = initx + (xwidth - self.widths[i])
@@ -686,7 +685,7 @@ class PartLines(Part):
 
             # record width if we're not rendering
             if not state.actually_render:
-                self.widths.append( state.x - initx )
+                self.widths.append(state.x - initx)
             # move up a line
             state.y += height
 
@@ -708,12 +707,12 @@ class PartSuperScript(Part):
         # change text height
         oldheight = state.fontMetrics().height()
         size = font.pointSizeF()
-        font.setPointSizeF(size*0.6)
+        font.setPointSizeF(size * 0.6)
         painter.setFont(font)
 
         # set position
         oldy = state.y
-        state.y -= oldheight*0.4
+        state.y -= oldheight * 0.4
 
         # draw children
         Part.render(self, state)
@@ -735,7 +734,7 @@ class PartFrac(Part):
 
         # make font half size
         size = font.pointSizeF()
-        font.setPointSizeF(size*0.5)
+        font.setPointSizeF(size * 0.5)
         painter.setFont(font)
 
         # keep track of width above and below line
@@ -748,7 +747,7 @@ class PartFrac(Part):
         # render bottom of fraction
         if state.actually_render and len(self.widths) == 2:
             # centre line
-            state.x = initx + (max(self.widths) - self.widths[0])*0.5
+            state.x = initx + (max(self.widths) - self.widths[0]) * 0.5
         self.children[1].render(state)
         if not state.actually_render:
             # get width if not rendering
@@ -759,7 +758,7 @@ class PartFrac(Part):
         state.y -= (m.ascent() + m.descent())
         if state.actually_render and len(self.widths) == 2:
             # centre line
-            state.x = initx + (max(self.widths) - self.widths[1])*0.5
+            state.x = initx + (max(self.widths) - self.widths[1]) * 0.5
         else:
             state.x = initx
         self.children[0].render(state)
@@ -777,14 +776,14 @@ class PartFrac(Part):
         # draw line between lines with 0.5pt thickness
         painter.save()
         pen = painter.pen()
-        painter.setPen( qt4.QPen(painter.pen().brush(),
-                                 state.getPixelsPerPt()*0.5) )
+        painter.setPen(qt4.QPen(painter.pen().brush(),
+                                 state.getPixelsPerPt() * 0.5))
         painter.setPen(pen)
 
         painter.drawLine(qt4.QPointF(initx,
-                                     inity-height/2.),
-                         qt4.QPointF(initx+max(self.widths),
-                                     inity-height/2.))
+                                     inity - height / 2.),
+                         qt4.QPointF(initx + max(self.widths),
+                                     inity - height / 2.))
 
         painter.restore()
 
@@ -795,7 +794,7 @@ class PartSubScript(Part):
 
         # change text height
         size = font.pointSizeF()
-        font.setPointSizeF(size*0.6)
+        font.setPointSizeF(size * 0.6)
         state.painter.setFont(font)
 
         # set position
@@ -830,12 +829,12 @@ class PartItalic(Part):
     def render(self, state):
         font = state.font
 
-        font.setItalic( not font.italic() )
+        font.setItalic(not font.italic())
         state.painter.setFont(font)
 
         Part.render(self, state)
 
-        font.setItalic( not font.italic() )
+        font.setItalic(not font.italic())
         state.painter.setFont(font)
 
 class PartBold(Part):
@@ -843,12 +842,12 @@ class PartBold(Part):
     def render(self, state):
         font = state.font
 
-        font.setBold( not font.bold() )
+        font.setBold(not font.bold())
         state.painter.setFont(font)
 
         Part.render(self, state)
 
-        font.setBold( not font.bold() )
+        font.setBold(not font.bold())
         state.painter.setFont(font)
 
 class PartUnderline(Part):
@@ -856,12 +855,12 @@ class PartUnderline(Part):
     def render(self, state):
         font = state.font
 
-        font.setUnderline( not font.underline() )
+        font.setUnderline(not font.underline())
         state.painter.setFont(font)
 
         Part.render(self, state)
 
-        font.setUnderline( not font.underline() )
+        font.setUnderline(not font.underline())
         state.painter.setFont(font)
 
 class PartFont(Part):
@@ -913,7 +912,7 @@ class PartSize(Part):
             size = self.size
         elif self.deltasize:
             # change of size
-            size = max(size+self.deltasize, 0.1)
+            size = max(size + self.deltasize, 0.1)
 
         font.setPointSizeF(size)
         state.painter.setFont(font)
@@ -937,12 +936,12 @@ class PartBar(Part):
         height = state.fontMetrics().ascent()
 
         painter.save()
-        penw = state.getPixelsPerPt()*0.5
-        painter.setPen( qt4.QPen(painter.pen().brush(), penw) )
+        penw = state.getPixelsPerPt() * 0.5
+        painter.setPen(qt4.QPen(painter.pen().brush(), penw))
         painter.drawLine(qt4.QPointF(initx,
-                                     state.y-height+penw),
+                                     state.y - height + penw),
                          qt4.QPointF(state.x,
-                                     state.y-height+penw))
+                                     state.y - height + penw))
         painter.restore()
 
 class PartHat(Part):
@@ -959,15 +958,13 @@ class PartHat(Part):
         height = state.fontMetrics().ascent()
 
         painter.save()
-        penw = state.getPixelsPerPt()*0.5
-        painter.setPen( qt4.QPen(painter.pen().brush(), penw) )
-        hatheight = min((state.x-initx)/2, height / 3.)
-        painter.drawLine(
-            qt4.QPointF(initx, state.y-height+penw),
-            qt4.QPointF((initx+state.x)/2, state.y-height+penw-hatheight))
-        painter.drawLine(
-            qt4.QPointF((initx+state.x)/2, state.y-height+penw-hatheight),
-            qt4.QPointF(state.x, state.y-height+penw))
+        penw = state.getPixelsPerPt() * 0.5
+        painter.setPen(qt4.QPen(painter.pen().brush(), penw))
+        hatheight = min((state.x - initx) / 2, height / 3.)
+        painter.drawLine(qt4.QPointF(initx, state.y - height + penw),
+            qt4.QPointF((initx + state.x) / 2, state.y - height + penw - hatheight))
+        painter.drawLine(qt4.QPointF((initx + state.x) / 2, state.y - height + penw - hatheight),
+            qt4.QPointF(state.x, state.y - height + penw))
         painter.restore()
 
 class PartDot(Part):
@@ -985,14 +982,13 @@ class PartDot(Part):
 
         painter.save()
         circsize = state.getPixelsPerPt()
-        painter.setBrush( qt4.QBrush(painter.pen().color()) )
-        painter.setPen( qt4.QPen(qt4.Qt.NoPen) )
+        painter.setBrush(qt4.QBrush(painter.pen().color()))
+        painter.setPen(qt4.QPen(qt4.Qt.NoPen))
 
-        x = 0.5*(initx + state.x)
-        y = state.y-height + circsize
-        painter.drawEllipse( qt4.QRectF(
-                qt4.QPointF(x-circsize,y-circsize),
-                qt4.QPointF(x+circsize,y+circsize)) )
+        x = 0.5 * (initx + state.x)
+        y = state.y - height + circsize
+        painter.drawEllipse(qt4.QRectF(qt4.QPointF(x - circsize,y - circsize),
+                qt4.QPointF(x + circsize,y + circsize)))
         painter.restore()
 
 class PartMarker(Part):
@@ -1004,14 +1000,13 @@ class PartMarker(Part):
 
         painter.save()
         pen = painter.pen()
-        pen.setWidthF( state.getPixelsPerPt() * 0.5 )
+        pen.setWidthF(state.getPixelsPerPt() * 0.5)
         painter.setPen(pen)
 
         try:
-            points.plotMarker(
-                painter, state.x + size/2.,
-                state.y - size/2.,
-                self.children[0].text, size*0.3)
+            points.plotMarker(painter, state.x + size / 2.,
+                state.y - size / 2.,
+                self.children[0].text, size * 0.3)
         except ValueError:
             pass
 
@@ -1032,7 +1027,7 @@ class PartColor(Part):
         pen = painter.pen()
         oldcolor = pen.color()
 
-        pen.setColor( painter.docColor(self.colorname) )
+        pen.setColor(painter.docColor(self.colorname))
         painter.setPen(pen)
 
         Part.render(self, state)
@@ -1104,13 +1099,13 @@ def makePartList(text):
                 # it will become a symbol, so preserve whitespace
                 doAdd(ps)
                 if ps != p:
-                    doAdd(p[len(ps)-len(p):])
+                    doAdd(p[len(ps) - len(p):])
             else:
                 # add as possible command, so drop excess whitespace
                 doAdd(ps)
         elif p == '{':
             # add a new level
-            parents.append( doAdd([]) )
+            parents.append(doAdd([]))
         elif p == '}':
             if len(parents) > 1:
                 parents.pop()
@@ -1131,52 +1126,51 @@ def makePartTree(partlist):
         if itemlist and isinstance(itemlist[-1], PartText):
             itemlist[-1].addText(text)
         else:
-            itemlist.append( PartText(text) )
+            itemlist.append(PartText(text))
 
     i = 0
     while i < length:
         p = partlist[i]
         if p == r'\\':
-            lines.append( Part(itemlist) )
+            lines.append(Part(itemlist))
             itemlist = []
         elif isinstance(p, cbasestr):
             if p in symbols:
                 addText(symbols[p])
             elif p in part_commands:
                 klass, numargs = part_commands[p]
-                if numargs == 1 and len(partlist) > i+1 and isinstance(partlist[i+1], cbasestr):
+                if numargs == 1 and len(partlist) > i + 1 and isinstance(partlist[i + 1], cbasestr):
                     # coerce a single argument to a partlist so that things
                     # like "A^\dagger" render correctly without needing
                     # curly brackets
-                    partargs = [makePartTree([partlist[i+1]])]
+                    partargs = [makePartTree([partlist[i + 1]])]
                 else:
-                    partargs = [makePartTree(k) for k in partlist[i+1:i+numargs+1]]
+                    partargs = [makePartTree(k) for k in partlist[i + 1:i + numargs + 1]]
 
                 if (p == '^' or p == '_'):
-                    if len(itemlist) > 0 and (
-                        isinstance(itemlist[-1], PartSubScript) or
-                        isinstance(itemlist[-1], PartSuperScript) or
-                        isinstance(itemlist[-1], PartMultiScript)):
-                        # combine sequences of multiple sub-/superscript parts into
-                        # a MultiScript item so that a single text item can have
+                    if len(itemlist) > 0 and (isinstance(itemlist[-1], PartSubScript) or isinstance(itemlist[-1], PartSuperScript) or isinstance(itemlist[-1], PartMultiScript)):
+                        # combine sequences of multiple sub-/superscript parts
+                        # into
+                        # a MultiScript item so that a single text item can
+                        # have
                         # both super and subscript indicies
-                        # e.g. X^{(q)}_{i}
+                        # e.g.  X^{(q)}_{i}
                         if isinstance(itemlist[-1], PartMultiScript):
-                            itemlist.append( klass(partargs) )
+                            itemlist.append(klass(partargs))
                         else:
                             itemlist[-1] = PartMultiScript([itemlist[-1], klass(partargs)])
                     else:
-                        itemlist.append( klass(partargs) )
+                        itemlist.append(klass(partargs))
                 else:
-                    itemlist.append( klass(partargs) )
+                    itemlist.append(klass(partargs))
                 i += numargs
             else:
                 addText(p)
         else:
-            itemlist.append( makePartTree(p) )
+            itemlist.append(makePartTree(p))
         i += 1
     # remaining items
-    lines.append( Part(itemlist) )
+    lines.append(Part(itemlist))
 
     if len(lines) == 1:
         # single line, so optimize (itemlist == lines[0] still)
@@ -1191,11 +1185,10 @@ def makePartTree(partlist):
 class _Renderer:
     """Different renderer types based on this."""
 
-    def __init__(
-            self, painter, font, x, y, text,
-            alignhorz = -1, alignvert = -1, angle = 0,
-            usefullheight = False,
-            doc = None):
+    def __init__(self, painter, font, x, y, text,
+            alignhorz=-1, alignvert=-1, angle=0,
+            usefullheight=False,
+            doc=None):
 
         self.painter = painter
         self.font = font
@@ -1216,8 +1209,8 @@ class _Renderer:
     def _initText(self, text):
         """Override this to set up renderer with text."""
 
-    def ensureInBox(self, minx = -32767, maxx = 32767,
-                    miny = -32767, maxy = 32767, extraspace = False):
+    def ensureInBox(self, minx=-32767, maxx=32767,
+                    miny=-32767, maxy=32767, extraspace=False):
         """Adjust position of text so that it is within this box."""
 
         if self.calcbounds is None:
@@ -1228,9 +1221,8 @@ class _Renderer:
         # add a small amount of extra room if requested
         if extraspace:
             self.painter.setFont(self.font)
-            l = FontMetrics(
-                self.font,
-                self.painter.device()).height()*0.2
+            l = FontMetrics(self.font,
+                self.painter.device()).height() * 0.2
             miny += l
 
         # twiddle positions and bounds
@@ -1264,7 +1256,7 @@ class _Renderer:
         if self.calcbounds is None:
             self.getBounds()
         cb = self.calcbounds
-        return (cb[2]-cb[0]+1, cb[3]-cb[1]+1)
+        return (cb[2] - cb[0] + 1, cb[3] - cb[1] + 1)
 
     def _getWidthHeight(self):
         """Calculate the width and height of rendered text.
@@ -1280,11 +1272,10 @@ class _Renderer:
 
         totalwidth, totalheight, dy = self._getWidthHeight()
 
-        return RotatedRectangle(
-            0.5*(largebounds[0]+largebounds[2]),
-            0.5*(largebounds[1]+largebounds[3]),
+        return RotatedRectangle(0.5 * (largebounds[0] + largebounds[2]),
+            0.5 * (largebounds[1] + largebounds[3]),
             totalwidth,
-            totalheight+dy,
+            totalheight + dy,
             self.angle * math.pi / 180.)
 
     def getBounds(self):
@@ -1299,40 +1290,40 @@ class _Renderer:
         # in fact we add two extra points to account for descent if reqd
         tw = totalwidth / 2
         th = totalheight / 2
-        coordx = N.array( [-tw,  tw,  tw, -tw, -tw,    tw   ] )
-        coordy = N.array( [ th,  th, -th, -th,  th+dy, th+dy] )
+        coordx = N.array([-tw,  tw,  tw, -tw, -tw,    tw])
+        coordy = N.array([th,  th, -th, -th,  th + dy, th + dy])
 
         # rotate angles by theta
         theta = -self.angle * (math.pi / 180.)
         c = math.cos(theta)
         s = math.sin(theta)
-        newx = coordx*c + coordy*s
-        newy = coordy*c - coordx*s
+        newx = coordx * c + coordy * s
+        newy = coordy * c - coordx * s
 
         # calculate bounding box
         newbound = (newx.min(), newy.min(), newx.max(), newy.max())
 
         # use rotated bounding box to find position of start text posn
         if self.alignhorz < 0:
-            xr = ( self.x, self.x+(newbound[2]-newbound[0]) )
+            xr = (self.x, self.x + (newbound[2] - newbound[0]))
             self.xi += (newx[0] - newbound[0])
         elif self.alignhorz > 0:
-            xr = ( self.x-(newbound[2]-newbound[0]), self.x )
+            xr = (self.x - (newbound[2] - newbound[0]), self.x)
             self.xi += (newx[0] - newbound[2])
         else:
-            xr = ( self.x+newbound[0], self.x+newbound[2] )
+            xr = (self.x + newbound[0], self.x + newbound[2])
             self.xi += newx[0]
 
         # y alignment
         # adjust y by these values to ensure proper alignment
         if self.alignvert < 0:
-            yr = ( self.y + (newbound[1]-newbound[3]), self.y )
+            yr = (self.y + (newbound[1] - newbound[3]), self.y)
             self.yi += (newy[0] - newbound[3])
         elif self.alignvert > 0:
-            yr = ( self.y, self.y + (newbound[3]-newbound[1]) )
+            yr = (self.y, self.y + (newbound[3] - newbound[1]))
             self.yi += (newy[0] - newbound[1])
         else:
-            yr = ( self.y+newbound[1], self.y+newbound[3] )
+            yr = (self.y + newbound[1], self.y + newbound[3])
             self.yi += newy[0]
 
         self.calcbounds = [xr[0], yr[0], xr[1], yr[1]]
@@ -1350,8 +1341,8 @@ class _StdRenderer(_Renderer):
         delta = 0
         for m in self.exprexpansion.finditer(text):
             expanded = self._expandExpr(m.group(1))
-            text = text[:delta+m.start()] + expanded + text[delta+m.end():]
-            delta += len(expanded) - (m.end()-m.start())
+            text = text[:delta + m.start()] + expanded + text[delta + m.end():]
+            delta += len(expanded) - (m.end() - m.start())
 
         # make internal tree
         partlist = makePartList(text)
@@ -1381,8 +1372,7 @@ class _StdRenderer(_Renderer):
         # work out height of box, and
         # make the bounding box a bit bigger if we want to include descents
 
-        state = RenderState(
-            self.font, self.painter, 0, 0,
+        state = RenderState(self.font, self.painter, 0, 0,
             self.alignhorz,
             actually_render = False)
 
@@ -1394,7 +1384,7 @@ class _StdRenderer(_Renderer):
         else:
             if self.alignvert == 0:
                 # if want vertical centering, better to centre around middle
-                # of typical letter (i.e. where strike position is)
+                # of typical letter (i.e.  where strike position is)
                 #totalheight = fm.strikeOutPos()*2
                 totalheight = fm.boundingRectChar('0').height()
             else:
@@ -1406,7 +1396,7 @@ class _StdRenderer(_Renderer):
         self.parttree.render(state)
         totalwidth = state.x
         # add number of lines for height
-        totalheight += fm.height()*(state.maxlines-1)
+        totalheight += fm.height() * (state.maxlines - 1)
 
         return totalwidth, totalheight, dy
 
@@ -1416,15 +1406,14 @@ class _StdRenderer(_Renderer):
         if self.calcbounds is None:
             self.getBounds()
 
-        state = RenderState(
-            self.font, self.painter,
+        state = RenderState(self.font, self.painter,
             self.xi, self.yi,
             self.alignhorz)
 
         # if the text is rotated, change the coordinate frame
         if self.angle != 0:
             self.painter.save()
-            self.painter.translate( qt4.QPointF(state.x, state.y) )
+            self.painter.translate(qt4.QPointF(state.x, state.y))
             self.painter.rotate(self.angle)
             state.x = 0
             state.y = 0
@@ -1465,12 +1454,11 @@ class _MmlRenderer(_Renderer):
 
         # We write the mathmml document to a RecordPaintDevice device
         # at the same DPI as the screen, because the MML code breaks
-        # for other DPIs. We then repaint the output to the real
+        # for other DPIs.  We then repaint the output to the real
         # device, scaling to make the size correct.
 
         screendev = qt4.QApplication.desktop()
-        self.record = recordpaint.RecordPaintDevice(
-            1024, 1024, screendev.logicalDpiX(), screendev.logicalDpiY())
+        self.record = recordpaint.RecordPaintDevice(1024, 1024, screendev.logicalDpiX(), screendev.logicalDpiY())
 
         rpaint = qt4.QPainter(self.record)
         # painting code relies on these attributes of the painter
@@ -1478,11 +1466,11 @@ class _MmlRenderer(_Renderer):
         rpaint.scaling = 1.0
 
         # Upscale any drawing by this factor, then scale back when
-        # drawing. We have to do this to get consistent output at
+        # drawing.  We have to do this to get consistent output at
         # different zoom factors (I hate this code).
         upscale = 5.
 
-        doc.setFontName( qtmml.QtMmlWidget.NormalFont, self.font.family() )
+        doc.setFontName(qtmml.QtMmlWidget.NormalFont, self.font.family())
 
         ptsize = self.font.pointSizeF()
         if ptsize < 0:
@@ -1491,9 +1479,7 @@ class _MmlRenderer(_Renderer):
         doc.setBaseFontPointSize(ptsize * upscale)
 
         # the output will be painted finally scaled
-        self.drawscale = (
-            self.painter.dpi / screendev.logicalDpiY()
-            / upscale )
+        self.drawscale = (self.painter.dpi / screendev.logicalDpiY() / upscale)
         self.size = doc.size() * self.drawscale
 
         doc.paint(rpaint, qt4.QPoint(0, 0))
@@ -1521,10 +1507,9 @@ class _MmlRenderer(_Renderer):
             # display an error - must be a better way to do this
             p.setFont(qt4.QFont())
             p.setPen(qt4.QPen(qt4.QColor("red")))
-            p.drawText( qt4.QRectF(self.xi, self.yi, 200, 200),
-                        qt4.Qt.AlignLeft | qt4.Qt.AlignTop |
-                        qt4.Qt.TextWordWrap,
-                        self.error )
+            p.drawText(qt4.QRectF(self.xi, self.yi, 200, 200),
+                        qt4.Qt.AlignLeft | qt4.Qt.AlignTop | qt4.Qt.TextWordWrap,
+                        self.error)
         p.restore()
 
         return self.calcbounds
@@ -1533,9 +1518,9 @@ class _MmlRenderer(_Renderer):
 mml_re = re.compile(r'^\s*<math.*</math\s*>\s*$', re.DOTALL)
 
 def Renderer(painter, font, x, y, text,
-             alignhorz = -1, alignvert = -1, angle = 0,
-             usefullheight = False,
-             doc = None):
+             alignhorz=-1, alignvert=-1, angle=0,
+             usefullheight=False,
+             doc=None):
 
     """Return an appropriate Renderer object depending on the text.
     This looks like a class name, because it was a class originally.
@@ -1558,9 +1543,7 @@ def Renderer(painter, font, x, y, text,
     else:
         r = _StdRenderer
 
-    return r(
-        painter, font, x, y, text,
+    return r(painter, font, x, y, text,
         alignhorz=alignhorz, alignvert=alignvert,
         angle=angle, usefullheight=usefullheight,
-        doc=doc
-        )
+        doc=doc)
