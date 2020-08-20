@@ -11,12 +11,11 @@ Requirements:
                  https://www.python.org/
  PyQt >= 5.2     https://www.riverbankcomputing.co.uk/software/pyqt/
  numpy >= 1.0    http://www.numpy.org/
- argparse        https://pypi.python.org/pypi/argparse (Python 2.6 only)
 
 PyQt requires
  Qt5 >= 5.5      https://www.qt.io/developers/
                  latest version recommended
- SIP >= 4.15     https://www.riverbankcomputing.co.uk/software/sip/
+ SIP 4.x >= 4.15 https://www.riverbankcomputing.co.uk/software/sip/
 
 Optional requirements:
  h5py            http://www.h5py.org/
@@ -29,7 +28,7 @@ Optional requirements:
  Ghostscript     https://www.ghostscript.com/ (for EPS/PS output)
  Sphinx          http://www.sphinx-doc.org/en/stable/ (to rebuild manual)
 
-Note that the source code is compatible with both python 2.6+ and
+Note that the source code is compatible with both python 2.7+ and
 3.3+. It does not need translation with 2to3. The optional dependency
 pyemf does not have Python 3 support, but an in-development version of
 pyemf for Python 3 can be found at https://github.com/jeremysanders/pyemf.
@@ -43,7 +42,7 @@ To install on Linux to the standard location on the hard disk follow
 these instructions (note python in these commands should be replaced
 by python3 to do a Python 3 installation).
 
-# cd veusz-3.1
+# cd veusz-3.2.1
 # python setup.py build
 # su
 [enter root password]
@@ -148,15 +147,13 @@ can currently be run from its own directory. Before this can work, the
 helper modules must be compiled and copied into the appropriate
 location.
 
-# tar xzf veusz-3.1.tar.gz                [change version here]
-# cd veusz-3.1
+# tar xzf veusz-3.2.1.tar.gz                [change version here]
+# cd veusz-3.2.1
 # python setup.py build                     [or use python3 here]
 # cp build/*/veusz/helpers/*.so veusz/helpers/
 
 To run the program run
 
-# ./run_veusz_inplace
- or
 # python3 ./run_veusz_inplace
 
 2. BINARY INSTALL
@@ -165,14 +162,14 @@ To run the program run
 2.1 Linux binary
 ================
 If your distribution does not include an up to date package, you can
-use the Linux binary instead (for i386/x86_64). Note that this may not
+use the Linux binary instead (for x86_64). Note that this may not
 work on all distributions due to glibc/library
 incompatibilities. Simply unpack the tar file and run the main
 executable:
 
-# tar xf veusz-3.1-linux-x86.tar.xz     [change version here]
-# cd veusz-3.1-linux-x86
-# ./veusz
+# tar xf veusz-3.2.1-linux-x86_64.tar.xz   [change version here]
+# cd veusz-3.2.1-linux-x86_64
+# ./veusz.exe                    [note, it's not a windows exe!]
 
 2.2 Installing in Windows
 =========================

@@ -38,6 +38,8 @@ images and use a fixed (hacked) font metric to give the same results
 on each platform. In addition Unicode characters are expanded to their
 Unicode code to work around different font handling on platforms.
 
+If VEUSZ_INPLACE_TEST is set then tests are run assuming that we are
+running from the source directory.
 """
 
 # messes up loaded files if set
@@ -58,8 +60,19 @@ try:
 except ImportError:
     h5py = None
 
+if 'VEUSZ_INPLACE_TEST' in os.environ:
+    sys.path.append(os.getcwd())
+    os.environ['VEUSZ_RESOURCE_DIR'] = os.getcwd()
+    os.environ['PYTHONPATH'] = ('%s:%s' % (
+        os.getcwd(), os.environ.get('PYTHONPATH', ''))).rstrip(':')
+
+# workaround for CI tests - delete environment variable
+removeenv = os.environ.get('VEUSZ_REMOVE_FROM_ENV', '')
+for remove in removeenv.split():
+    del os.environ[remove]
+
 from veusz.compat import cexec, cstr, copenuniversal
-import veusz.qtall as qt4
+import veusz.qtall as qt
 import veusz.utils as utils
 import veusz.document as document
 import veusz.setting as setting
@@ -125,10 +138,10 @@ class StupidFontMetrics(object):
         return 0.1*self.height()
 
     def boundingRect(self, c):
-        return qt4.QRectF(0, 0, self.height()*0.5, self.height())
+        return qt.QRectF(0, 0, self.height()*0.5, self.height())
 
     def boundingRectChar(self, c):
-        return qt4.QRectF(0, 0, self.height()*0.5, self.height())
+        return qt.QRectF(0, 0, self.height()*0.5, self.height())
 
     def lineSpacing(self):
         return 0.1*self.height()
@@ -279,7 +292,7 @@ def fltStr(v, prec=1):
     return oldflt(v, prec=prec)
 
 if __name__ == '__main__':
-    app = qt4.QApplication([])
+    app = qt.QApplication([])
 
     setting.transient_settings['unsafe_mode'] = True
 

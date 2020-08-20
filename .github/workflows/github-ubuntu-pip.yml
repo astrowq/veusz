@@ -1,0 +1,32 @@
+# Veusz build using PyPI packages on Ubuntu
+
+name: Ubuntu build using pip packages
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        sudo apt-get -y install qt5-default qt5-qmake
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Build extensions
+      run: |
+        python setup.py build_ext --inplace
+    - name: Run tests
+      run: |
+        QT_QPA_PLATFORM=minimal VEUSZ_INPLACE_TEST=1 tests/runselftest.py

@@ -36,7 +36,7 @@ SetCompressor /solid lzma
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
 !define MUI_FINISHPAGE_RUN "$INSTDIR\veusz.exe"
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\README.md"
 !define MUI_FINISHPAGE_SHOWREADME_FUNCTION ShowReadme
 !insertmacro MUI_PAGE_FINISH
 
@@ -95,43 +95,58 @@ Section "MainSection" SEC01
   CreateShortCut "$DESKTOP\Veusz.lnk" "$INSTDIR\veusz.exe"
   SetOverwrite ifnewer
 
-  File "${PYINST_DIR}\README"
+  File "${PYINST_DIR}\README.md"
   File "${PYINST_DIR}\COPYING"
   File "${PYINST_DIR}\VERSION"
-
-  SetOutPath "$INSTDIR\icons"
-  File "${PYINST_DIR}\icons\*.png"
-  File "${PYINST_DIR}\icons\*.ico"
-  File "${PYINST_DIR}\icons\*.svg"
-
-  SetOutPath "$INSTDIR\ui"
-  File "${PYINST_DIR}\ui\*.ui"
 
   SetOutPath "$INSTDIR\examples"
   File "${PYINST_DIR}\examples\*.vsz"
   File "${PYINST_DIR}\examples\*.py"
   File "${PYINST_DIR}\examples\*.dat"
   File "${PYINST_DIR}\examples\*.csv"
-  SetOutPath "$INSTDIR"
 
+  SetOutPath "$INSTDIR\h5py"
+  File "${PYINST_DIR}\h5py\*.pyd"
+
+  SetOutPath "$INSTDIR\icons"
+  File "${PYINST_DIR}\icons\*.png"
+  File "${PYINST_DIR}\icons\*.ico"
+  File "${PYINST_DIR}\icons\*.svg"
+
+  SetOutPath "$INSTDIR\iminuit"
+  File "${PYINST_DIR}\iminuit\*.pyd"
+
+  SetOutPath "$INSTDIR\numpy\core"
+  File "${PYINST_DIR}\numpy\core\*.pyd"
+  SetOutPath "$INSTDIR\numpy\fft"
+  File "${PYINST_DIR}\numpy\fft\*.pyd"
+  SetOutPath "$INSTDIR\numpy\linalg"
+  File "${PYINST_DIR}\numpy\linalg\*.pyd"
+  SetOutPath "$INSTDIR\numpy\random"
+  File "${PYINST_DIR}\numpy\random\*.pyd"
+
+  SetOutPath "$INSTDIR\PyQt5"
+  File "${PYINST_DIR}\PyQt5\*.pyd"
+  SetOutPath "$INSTDIR\PyQt5\Qt\translations"
+  File "${PYINST_DIR}\PyQt5\Qt\translations\*.qm"
   SetOutPath "$INSTDIR\PyQt5\Qt\plugins\iconengines"
   File "${PYINST_DIR}\PyQt5\Qt\plugins\iconengines\*.dll"
-  SetOutPath "$INSTDIR"
-
   SetOutPath "$INSTDIR\PyQt5\Qt\plugins\imageformats"
   File "${PYINST_DIR}\PyQt5\Qt\plugins\imageformats\*.dll"
-  SetOutPath "$INSTDIR"
-
   SetOutPath "$INSTDIR\PyQt5\Qt\plugins\platforms"
   File "${PYINST_DIR}\PyQt5\Qt\plugins\platforms\*.dll"
-  SetOutPath "$INSTDIR"
-
   SetOutPath "$INSTDIR\PyQt5\Qt\plugins\printsupport"
   File "${PYINST_DIR}\PyQt5\Qt\plugins\printsupport\*.dll"
-  SetOutPath "$INSTDIR"
 
-  SetOutPath "$INSTDIR\PyQt5\Qt\plugins\styles"
-  File "${PYINST_DIR}\PyQt5\Qt\plugins\styles\*.dll"
+  SetOutPath "$INSTDIR\ui"
+  File "${PYINST_DIR}\ui\*.ui"
+
+  SetOutPath "$INSTDIR\veusz\helpers"
+  File "${PYINST_DIR}\veusz\helpers\*.pyd"
+
+  SetOutPath "$INSTDIR\win32com\shell"
+  File "${PYINST_DIR}\win32com\shell\*.pyd"
+
   SetOutPath "$INSTDIR"
 
   WriteRegStr HKCR ".vsz" "" "Veusz.Document"
@@ -169,7 +184,7 @@ Function un.onInit
 FunctionEnd
 
 Function ShowReadme
-  Exec "notepad.exe $INSTDIR\README"
+  Exec "notepad.exe $INSTDIR\README.md"
 FunctionEnd
 
 Section Uninstall
@@ -177,7 +192,7 @@ Section Uninstall
   Delete "$INSTDIR\uninst.exe"
 
   Delete "$INSTDIR\COPYING"
-  Delete "$INSTDIR\README"
+  Delete "$INSTDIR\README.md"
   Delete "$INSTDIR\VERSION"
 
   Delete "$INSTDIR\*.pyd"
@@ -189,11 +204,21 @@ Section Uninstall
   Delete "$INSTDIR\__init__.py"
   Delete "$INSTDIR\qt.conf"
 
+  Delete "$INSTDIR\veusz\helpers\*.pyd"
+  Delete "$INSTDIR\win32com\shell\*.pyd"
+  Delete "$INSTDIR\iminuit\*.pyd"
+  Delete "$INSTDIR\PyQt5\*.pyd"
+  Delete "$INSTDIR\numpy\core\*.pyd"
+  Delete "$INSTDIR\numpy\fft\*.pyd"
+  Delete "$INSTDIR\numpy\linalg\*.pyd"
+  Delete "$INSTDIR\numpy\random\*.pyd"
+  Delete "$INSTDIR\h5py\*.pyd"
+
   Delete "$INSTDIR\PyQt5\Qt\plugins\iconengines\*.dll"
   Delete "$INSTDIR\PyQt5\Qt\plugins\imageformats\*.dll"
   Delete "$INSTDIR\PyQt5\Qt\plugins\platforms\*.dll"
   Delete "$INSTDIR\PyQt5\Qt\plugins\printsupport\*.dll"
-  Delete "$INSTDIR\PyQt5\Qt\plugins\styles\*.dll"
+  Delete "$INSTDIR\PyQt5\Qt\translations\*.qm"
 
   Delete "$INSTDIR\icons\*.png"
   Delete "$INSTDIR\icons\*.ico"
@@ -207,18 +232,28 @@ Section Uninstall
   Delete "$SMPROGRAMS\Veusz\Veusz.lnk"
 
   RMDir "$SMPROGRAMS\Veusz"
-  RMDir "$INSTDIR\eggs"
+  RMDir "$INSTDIR\examples"
+  RMDir "$INSTDIR\h5py"
+  RMDir "$INSTDIR\icons"
+  RMDir "$INSTDIR\iminuit"
+  RMDir "$INSTDIR\numpy\core"
+  RMDir "$INSTDIR\numpy\fft"
+  RMDir "$INSTDIR\numpy\linalg"
+  RMDir "$INSTDIR\numpy\random"
+  RMDir "$INSTDIR\numpy"
   RMDir "$INSTDIR\PyQt5\Qt\plugins\iconengines"
-  RMDIR "$INSTDIR\PyQt5\Qt\plugins\imageformats"
+  RMDir "$INSTDIR\PyQt5\Qt\plugins\imageformats"
   RMDir "$INSTDIR\PyQt5\Qt\plugins\platforms"
-  RMDIR "$INSTDIR\PyQt5\Qt\plugins\printsupport"
-  RMDIR "$INSTDIR\PyQt5\Qt\plugins\styles"
+  RMDir "$INSTDIR\PyQt5\Qt\plugins\printsupport"
   RMDir "$INSTDIR\PyQt5\Qt\plugins"
+  RMDir "$INSTDIR\PyQt5\Qt\translations"
   RMDir "$INSTDIR\PyQt5\Qt"
   RMDir "$INSTDIR\PyQt5"
-  RMDIR "$INSTDIR\icons"
   RMDir "$INSTDIR\ui"
-  RMDIR "$INSTDIR\examples"
+  RMDir "$INSTDIR\veusz\helpers"
+  RMDir "$INSTDIR\veusz"
+  RMDir "$INSTDIR\win32com\shell"
+  RMDir "$INSTDIR\win32com"
   RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
