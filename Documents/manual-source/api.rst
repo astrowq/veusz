@@ -159,6 +159,15 @@ values.  method is 'counts', 'density', or 'fractions'.  cumulative is
 to calculate cumulative distributions which is 'none', 'smalltolarge'
 or 'largetosmall'.  errors is to calculate Poisson error bars.
 
+CurrentPath
+-----------
+
+.. _Command.CurrentPath
+
+:command:`CurrentPath()`
+
+Returns current widget path, as set by :ref:`To<Command.To>`.
+
 DatasetPlugin
 -------------
 
@@ -1429,11 +1438,11 @@ example).
     To('graph1')
     Add('axis', name='x')
     To('x')
-    Set('label', '\\\\italic{x}')
+    Set('label', '\\italic{x}')
     To('..')
     Add('axis', name='y')
     To('y')
-    Set('label', 'sin \\\\italic{x}')
+    Set('label', 'sin \\italic{x}')
     Set('direction', 'vertical')
     To('..')
     Add('xy', name='xy1')
@@ -1458,8 +1467,9 @@ example).
     # note: autoAdd=False stops graph automatically adding own axes (used in saved files)
     graph = page.Add('graph', autoadd=False)
     x = graph.Add('axis', name='x')
-    x.label.val = '\\\\italic{x}'
+    x.label.val = '\\italic{x}'
     y = graph.Add('axis', name='y')
+    y.label.val = 'sin \\italic{x}'
     y.direction.val = 'vertical'
     xy = graph.Add('xy')
     xy.MarkerFill.color.val = 'cyan'

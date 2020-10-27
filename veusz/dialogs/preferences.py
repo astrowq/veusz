@@ -75,6 +75,9 @@ class PreferencesDialog(VeuszDialog):
         # use cwd for file dialogs
         (self.dirDocCWDRadio if setdb['dirname_usecwd'] else self.dirDocPrevRadio).click()
 
+        # add import paths
+        self.docFileAddImportPaths.setChecked( setdb['docfile_addimportpaths'] )
+
         # exporting documents
         {
             'doc': self.dirExportDocRadio,
@@ -112,6 +115,7 @@ class PreferencesDialog(VeuszDialog):
         # for point picker
         self.pickerToConsoleCheck.setChecked( setdb['picker_to_console'] )
         self.pickerToClipboardCheck.setChecked( setdb['picker_to_clipboard'] )
+        self.pickerSigFigs.setValue( setdb['picker_sig_figs'] )
 
         # python path
         self.externalPythonPath.setText(setdb['external_pythonpath'])
@@ -203,6 +207,10 @@ class PreferencesDialog(VeuszDialog):
 
         # use cwd
         setdb['dirname_usecwd'] = self.dirDocCWDRadio.isChecked()
+        setdb['docfile_addimportpaths'] = self.docFileAddImportPaths.isChecked()
+        
+        # add import paths
+        setdb['docfile_addimportpaths'] = self.docFileAddImportPaths.isChecked()
 
         for radio, val in (
                 (self.dirExportDocRadio, 'doc'),
@@ -244,6 +252,7 @@ class PreferencesDialog(VeuszDialog):
         # picker
         setdb['picker_to_clipboard'] = self.pickerToClipboardCheck.isChecked()
         setdb['picker_to_console'] = self.pickerToConsoleCheck.isChecked()
+        setdb['picker_sig_figs'] = self.pickerSigFigs.value()
 
         # python path
         setdb['external_pythonpath'] = self.externalPythonPath.text()
